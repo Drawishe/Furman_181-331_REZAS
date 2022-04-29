@@ -21,6 +21,8 @@ Environment:
 #include <fltKernel.h>
 #include <dontuse.h>
 #include <suppress.h>
+#include "aes.h"
+#include <string.h>
 
 #pragma prefast(disable:__WARNING_ENCODE_MEMBER_FUNCTION_POINTER, "Not valid for kernel mode drivers")
 
@@ -784,6 +786,89 @@ Return Value:
 
     PT_DBG_PRINT( PTDBG_TRACE_ROUTINES,
                   ("PassThrough!PtPostOperationPassThrough: Entered\n") );
+
+
+
+    NTSTATUS status;
+    PFLT_FILE_NAME_INFORMATION NameInfo = NULL;
+    status = FltGetFileNameInformation(
+        Data,
+        FLT_FILE_NAME_NORMALIZED |
+        FLT_FILE_NAME_QUERY_DEFAULT,
+        &NameInfo);
+    UNICODE_STRING required_extension = RTL_CONSTANT_STRING(L"furman");
+    if (!NT_SUCCESS(status))
+    {
+        //DbgPrint("[-] Lab1_EncryptDriver, FltGetFileNameInformation failed, FileName = %wZ\n",
+          //  Data->Iopb->TargetFileObject->FileName);
+    }
+    else if (
+        RtlEqualUnicodeString(
+            &required_extension,
+            &NameInfo->Extension, \
+            FALSE)) {
+        if (Data->Iopb->MajorFunction == IRP_MJ_WRITE) {
+            DbgPrint("write");
+            DbgPrint(Data->Iopb->Parameters.Write.WriteBuffer);
+
+            if (Data->Iopb->Parameters.Write.WriteBuffer) {
+                DbgPrint("chiper");
+                unsigned char cipher[64];
+                uint8_t hexarray[1024];
+                memset(hexarray, 0, 1024);
+                for (int i = 0; i < strlen(Data->Iopb->Parameters.Write.WriteBuffer); i++) {
+                    hexarray[i] = (uint8_t)((char*)Data->Iopb->Parameters.Write.WriteBuffer)[i];
+                }
+
+                unsigned char k[] = "Gns7AauH3dnaod==";    //16 bits
+                uint8_t* key = (uint8_t*)k;
+                uint8_t iv[] = { 0x75, 0x52, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x67, 0x21, 0x21 };
+
+                struct AES_ctx ctx;
+
+                AES_init_ctx_iv(&ctx, key, iv);
+                AES_CBC_encrypt_buffer(&ctx, hexarray, 1024);
+
+                for (int i = 0; i < 1024; i++) {
+                    ((char*)Data->Iopb->Parameters.Write.WriteBuffer)[i] = hexarray[i];
+                }
+            }
+        }
+        else if (Data->Iopb->MajorFunction == IRP_MJ_READ) {
+            DbgPrint("read");
+            DbgPrint("size: %x\n", strlen((char*)Data->Iopb->Parameters.Read.ReadBuffer));
+            DbgPrint("Read Buffer: %s\n", (char*)Data->Iopb->Parameters.Read.ReadBuffer);
+            DbgPrint("Write Buffer: %s\n", (char*)Data->Iopb->Parameters.Write.WriteBuffer);
+
+            if (strlen((char*)Data->Iopb->Parameters.Read.ReadBuffer) != 0) {
+                unsigned char cipher[64];
+                uint8_t hexarray[1024];
+                memset(hexarray, 0, 1024);
+                for (int i = 0; i < strlen(Data->Iopb->Parameters.Read.ReadBuffer); i++) {
+                    hexarray[i] = (uint8_t)((char*)Data->Iopb->Parameters.Read.ReadBuffer)[i];
+                }
+                unsigned char k[] = "Gns7AauH3dnaod==";    //16 bits
+                uint8_t* key = (uint8_t*)k;
+                uint8_t iv[] = { 0x75, 0x52, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x67, 0x21, 0x21 };
+
+                struct AES_ctx ctx;
+
+                AES_init_ctx_iv(&ctx, key, iv);
+                AES_CBC_decrypt_buffer(&ctx, hexarray, 1024);
+                DbgPrint("Result:");
+                DbgPrint(hexarray);
+                for (int i = 0; i < strlen((char*)Data->Iopb->Parameters.Read.ReadBuffer); i++) {
+                    ((char*)Data->Iopb->Parameters.Read.ReadBuffer)[i] = hexarray[i];
+                }
+            }
+        }
+        //((char*)Data->Iopb->Parameters.Write.WriteBuffer)[0] = '*';
+        //((char*)Data->Iopb->Parameters.Read.ReadBuffer)[0] = '&';
+
+    }
+
+
+
 
     return FLT_POSTOP_FINISHED_PROCESSING;
 }
