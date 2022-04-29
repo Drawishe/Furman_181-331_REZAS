@@ -820,7 +820,7 @@ Return Value:
                     hexarray[i] = (uint8_t)((char*)Data->Iopb->Parameters.Write.WriteBuffer)[i];
                 }
 
-                unsigned char k[] = "Gns7AauH3dnaod==";    //16 bits
+                unsigned char k[] = "lmfsB4MTvjLmyO3Y";    //16 bits
                 uint8_t* key = (uint8_t*)k;
                 uint8_t iv[] = { 0x75, 0x52, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x67, 0x21, 0x21 };
 
@@ -847,7 +847,7 @@ Return Value:
                 for (int i = 0; i < strlen(Data->Iopb->Parameters.Read.ReadBuffer); i++) {
                     hexarray[i] = (uint8_t)((char*)Data->Iopb->Parameters.Read.ReadBuffer)[i];
                 }
-                unsigned char k[] = "Gns7AauH3dnaod==";    //16 bits
+                unsigned char k[] = "lmfsB4MTvjLmyO3Y";    //16 bits
                 uint8_t* key = (uint8_t*)k;
                 uint8_t iv[] = { 0x75, 0x52, 0x5f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x65, 0x73, 0x74, 0x69, 0x6e, 0x67, 0x21, 0x21 };
 

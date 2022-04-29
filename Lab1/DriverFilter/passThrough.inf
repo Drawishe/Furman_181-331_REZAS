@@ -10,7 +10,7 @@ Signature   = "$Windows NT$"
 Class       = "ActivityMonitor"                         ;This is determined by the work this filter driver does
 ClassGuid   = {b86dff51-a31e-4bac-b3cf-e8cfe75c9fc2}    ;This value is determined by the Class
 Provider    = %ProviderString%
-DriverVer   = 06/16/2007,1.0.0.1
+DriverVer = 04/30/2022,0.23.35.554
 CatalogFile = passthrough.cat
 
 
@@ -96,3 +96,4 @@ DefaultInstance         = "PassThrough Instance"
 Instance1.Name          = "PassThrough Instance"
 Instance1.Altitude      = "145005"
 Instance1.Flags         = 0x0              ; Allow all attachments
+
