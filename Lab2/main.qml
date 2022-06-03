@@ -59,7 +59,58 @@ Window {
             }
         }
     }
+    GridLayout{
+        id: accessGranted
+        anchors.fill: parent
+        visible: false
+        rows: 2
+        columns: 3
+        Rectangle{
+            color: "palegreen"
+            anchors.fill: parent
+        }
+        Item{
+            Layout.column: 0
+            Layout.row: 0
+            Layout.rowSpan: 2
+            Layout.fillWidth: true
+        }
 
+        Item{
+            Layout.column: 2
+            Layout.row: 0
+            Layout.rowSpan: 2
+            Layout.fillWidth: true
+        }
+        Label{
+            Layout.row: 1
+            Layout.column: 1
+            text: "Доступ разрешен!"
+            font.pixelSize: 25
+            font.family: consolas
+        }
+        Button{
+            id: accessGrantedNext
+            Layout.column: 1
+            Layout.row: 2
+            Layout.alignment: Qt.AlignCenter | Qt.AlignVCenter
+            background: Rectangle{
+                color: "#77dd77"
+            }
+            contentItem: Text {
+
+                            font.pixelSize: 20
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            text: qsTr("Продолжить")
+            }
+            onClicked: {
+                authScreen.visible = true
+                accessGranted.visible = false
+            }
+        }
+
+    }
     GridLayout{
         id: authScreen
         anchors.fill: parent
@@ -129,8 +180,9 @@ Window {
                         }
 
                         onClicked: {
-                            accessDenied.visible = true
+//                            accessDenied.visible = true
                             authScreen.visible = false
+                            accessGranted.visible = true
                             
                         }
                     }
