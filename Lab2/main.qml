@@ -8,15 +8,68 @@ Window {
     height: 480
     visible: true
     title: qsTr("Лабораторная работа №2. Менеджер паролей. Фурман Кирилл 181-331")
-    Rectangle {
-            id:background
-            color: "cyan"
+    GridLayout{
+        id: accessDenied
+        anchors.fill: parent
+        visible: false
+        rows: 2
+        columns: 3
+        Rectangle{
+            color: "salmon"
             anchors.fill: parent
         }
+        Item{
+            Layout.column: 0
+            Layout.row: 0
+            Layout.rowSpan: 2
+            Layout.fillWidth: true
+        }
+
+        Item{
+            Layout.column: 2
+            Layout.row: 0
+            Layout.rowSpan: 2
+            Layout.fillWidth: true
+        }
+        Label{
+            Layout.row: 1
+            Layout.column: 1
+            text: "Доступ запрещен!"
+            font.pixelSize: 25
+            font.family: consolas
+        }
+        Button{
+            id: accessDeniedTryAgain
+            Layout.column: 1
+            Layout.row: 2
+            Layout.alignment: Qt.AlignCenter | Qt.AlignVCenter
+            background: Rectangle{
+                color: "#e66761"
+            }
+            contentItem: Text {
+
+                            font.pixelSize: 20
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            text: qsTr("Попробовать еще")
+            }
+            onClicked: {
+                authScreen.visible = true
+                accessDenied.visible = false
+            }
+        }
+    }
+
     GridLayout{
+        id: authScreen
         anchors.fill: parent
         rows: 4
         columns: 3
+        Rectangle {
+                id:background
+                color: "cyan"
+                anchors.fill: parent
+        }
         Item{
             Layout.column: 0
             Layout.row: 0
@@ -75,7 +128,11 @@ Window {
 
                         }
 
-                        
+                        onClicked: {
+                            accessDenied.visible = true
+                            authScreen.visible = false
+                            
+                        }
                     }
 
 
