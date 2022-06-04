@@ -5,6 +5,7 @@
 #define BUF_LEN 100 // Длина буфера обмена между анклавом и небезопасным приложением
 
 const char table[6][41] = {
+	// Значения были сгенерированы случайным образом благодаря: https://www.browserling.com/tools/random-hex
 	"2BC7F22C0EF28F5C14DB4F2D4430AAD222532280",
 	"5373FEDA0C3B53A1B425FFB8542E8CEAB8B8620F",
 	"9334D8E51ADDF87674B4980600DA1060D62F0D4A",
@@ -29,7 +30,7 @@ int main() {
 	char buffer[BUF_LEN] = { 0 };
 
 	while (true) {
-		printf("Input index to retrieve, or -1 to exit: \t");
+		printf("Введите номер объекта для получения информации о нём или -1 чтобы выйти: \t");
 		int idx = -1;
 		scanf_s("%d", &idx);
 		if (idx < 0) {
