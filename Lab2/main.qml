@@ -36,7 +36,7 @@ Window {
             Layout.column: 1
             text: "Доступ запрещен!"
             font.pixelSize: 25
-            font.family: consolas
+            //font.family: consolas
         }
         Button{
             id: accessDeniedTryAgain
@@ -45,13 +45,14 @@ Window {
             Layout.alignment: Qt.AlignCenter | Qt.AlignVCenter
             background: Rectangle{
                 color: "#e66761"
+                radius: 5
             }
             contentItem: Text {
 
-                            font.pixelSize: 20
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            text: qsTr("Попробовать еще")
+                font.pixelSize: 20
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: qsTr("Попробовать еще")
             }
             onClicked: {
                 authScreen.visible = true
@@ -87,7 +88,7 @@ Window {
             Layout.column: 1
             text: "Доступ разрешен!"
             font.pixelSize: 25
-            font.family: consolas
+            //font.family: consolas
         }
         Button{
             id: accessGrantedNext
@@ -96,6 +97,7 @@ Window {
             Layout.alignment: Qt.AlignCenter | Qt.AlignVCenter
             background: Rectangle{
                 color: "#77dd77"
+                radius: 5
             }
             contentItem: Text {
 
@@ -105,8 +107,11 @@ Window {
                             text: qsTr("Продолжить")
             }
             onClicked: {
-                authScreen.visible = true
+                authScreen.visible = false
                 accessGranted.visible = false
+                scrollView.visible = true
+                listView.visible = true
+               //listView.visible = true
             }
         }
 
@@ -140,14 +145,14 @@ Window {
             Layout.column: 1
             id: authLabel
             font.pixelSize: 25
-            font.family: consolas
+//            //font.family: consolas
             text: "Введите PIN-код"
          }
 
         TextField{
             Layout.column: 1
             Layout.row: 2
-            id: pin
+            id: key
             visible: true
             cursorVisible: false
             placeholderText: "PIN"
@@ -160,6 +165,7 @@ Window {
             font.pixelSize: 20
             background: Rectangle{
                 color: "#008b8b"
+                radius: 5
             }
         }
 
@@ -170,6 +176,7 @@ Window {
             Layout.alignment: Qt.AlignCenter | Qt.AlignVCenter
             background: Rectangle{
                 color: "#008b8b"
+                radius: 5
             }
             contentItem: Text {
                             font.pixelSize: 20
@@ -178,12 +185,25 @@ Window {
                             text: qsTr("Войти")
 
                         }
-
                         onClicked: {
-//                            accessDenied.visible = true
-                            authScreen.visible = false
-                            accessGranted.visible = true
-                            
+                           //accessDenied.visible = true
+//                            authScreen.visible = false
+                           //accessGranted.visible = true
+                            if(makerDeff.parserFunc(key.text, "") === false){
+                                accessDenied.visible = true
+                                authScreen.visible = false
+                            }
+                            else {
+                                accessDenied.visible = false
+                                authScreen.visible = false
+                                accessGranted.visible = true
+
+                            //    key.visible = false
+                            //    labelauth.visible = false
+                            //    scrollview.visible = true
+                            //    auth.visible = false
+
+                            }
                         }
                     }
 
@@ -191,7 +211,178 @@ Window {
 
 
     }
+    ScrollView{
+        id: scrollView
+        anchors.fill: parent
+        visible: false
+        Layout.fillWidth: true
+        Rectangle {
+                color: "cyan"
+                anchors.fill: parent
+        }
+        Item {}
+
+        ColumnLayout{
+            anchors.fill: parent
+            TextField{
+                id: searchin
+                Layout.fillWidth: true
+                visible: true
+                cursorVisible: false
+                placeholderText: "Поиск"
+                Layout.margins: 20
+                color: "black"
+                font.pixelSize: 20
+                onEditingFinished: {
+                    makerDeff.parserFunc(key.text, searchin.text)
+                    //                    listView.model.roleNames().forEach(el => console.log(el))
+                }
+                background: Rectangle{
+                    color: "#008b8b"
+                    radius: 5
+                }
+            }
+
+            ListView{
+                id: listView
+                Layout.margins: 20
+                visible: false
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                enabled: true
+                model: sicretsmodal
+                spacing: 10
+                anchors.margins: 5
+
+                delegate: Rectangle{
+                    anchors.margins: 5
+                    width: listView.width
+                    height: 120
+                    border.color: "grey"
+                    radius: 10
 
 
+                    GridLayout{
+                        anchors.fill: parent
+                        columns: 4
+
+                        Image{
+                            //                            source: "img/back.jpg"
+
+                            Layout.rowSpan: 3
+                            Layout.fillHeight: true
+                            Layout.preferredWidth: 100
+                            Layout.margins: 5
+                            fillMode: Image.PreserveAspectFit
+                            Layout.alignment: Qt.AlignCenter
+                        }
+                        Label{
+                            color: "black"
+                            Layout.alignment: Qt.AlignVCenter
+                            text: urlka
+                            Layout.rowSpan: 3
+                            Layout.preferredWidth: 120
+                        }
+
+                        Button {
+                            id: givemelogin
+                            Layout.alignment: Qt.AlignVCenter
+                            Layout.rowSpan: 3
+                            Layout.preferredWidth: 170
+                            contentItem: Text {
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                text: "Скопировать логин"
+                                font.pixelSize: 15
+                            }
+                            onClicked: {
+                                popup.open()
+                                indexField.text = index
+                                typeField.text = "login"
+                            }
+                        }
+
+
+                        Button {
+                            id: givemepassword
+                            Layout.alignment: Qt.AlignVCenter
+                            Layout.rowSpan: 3
+                            Layout.preferredWidth: 170
+                            contentItem: Text {
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                                text: "Скопировать пароль"
+                                font.pixelSize: 15
+                            }
+                            onClicked: {
+                                popup.open()
+                                indexField.text = index
+                                typeField.text = "password"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    Popup{
+        id: popup
+        parent: Overlay.overlay
+        x: Math.round((parent.width - width) / 2)
+        y: Math.round((parent.height - height) / 2)
+        width: 400
+        height: 350
+        modal: true
+        ColumnLayout{
+            Layout.fillWidth: true
+            anchors.fill: parent
+            TextField{
+                id: popuppin
+                placeholderText: "Введите ключ шифрования"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                Layout.alignment: Qt.AlignCenter
+                Layout.fillWidth: true
+                Layout.margins: 20
+                color: "black"
+                font.pixelSize: 15
+
+            }
+
+            Label {
+                id: indexField
+                text: ""
+                visible: false
+            }
+
+            Label {
+                id: typeField
+                text: ""
+                visible: false
+            }
+
+            Button {
+                id: popupClose
+                Layout.alignment: Qt.AlignCenter
+                contentItem: Text {
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    text: qsTr("Получить данные")
+                    font.pixelSize: 20
+
+                }
+                onClicked: {
+                    makerDeff.copyToBufBarter(indexField.text, typeField.text, popuppin.text)
+                    popup.close()
+                    popuppin.clear()
+                    indexField.text = ""
+                    typeField.text = ""
+                }
+            }
+        }
+    }
 
 }
