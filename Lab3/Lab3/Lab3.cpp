@@ -1,11 +1,11 @@
-#include <stdio.h>
+п»ї#include <stdio.h>
 #include <tchar.h>
 #include <string.h>
 
-#define BUF_LEN 100 // Длина буфера обмена между анклавом и небезопасным приложением
-
+#define BUF_LEN 100 // Р”Р»РёРЅР° Р±СѓС„РµСЂР° РѕР±РјРµРЅР° РјРµР¶РґСѓ Р°РЅРєР»Р°РІРѕРј Рё РЅРµР±РµР·РѕРїР°СЃРЅС‹Рј РїСЂРёР»РѕР¶РµРЅРёРµРј
+/*
 const char table[6][41] = {
-	// Значения были сгенерированы случайным образом благодаря: https://www.browserling.com/tools/random-hex
+	// Р—РЅР°С‡РµРЅРёСЏ Р±С‹Р»Рё СЃРіРµРЅРµСЂРёСЂРѕРІР°РЅС‹ СЃР»СѓС‡Р°Р№РЅС‹Рј РѕР±СЂР°Р·РѕРј Р±Р»Р°РіРѕРґР°СЂСЏ: https://www.browserling.com/tools/random-hex
 	"2BC7F22C0EF28F5C14DB4F2D4430AAD222532280",
 	"5373FEDA0C3B53A1B425FFB8542E8CEAB8B8620F",
 	"9334D8E51ADDF87674B4980600DA1060D62F0D4A",
@@ -24,13 +24,13 @@ void foo(char* buf, size_t len, size_t idx) {
 	}
 	return;
 }
-
+*/
 int main() {
-	
+
 	char buffer[BUF_LEN] = { 0 };
 
 	while (true) {
-		printf("Введите номер объекта для получения информации о нём или -1 чтобы выйти: \t");
+		printf("Enter a number of object to get information or enter -1 to exit a program: \t");
 		int idx = -1;
 		scanf_s("%d", &idx);
 		if (idx < 0) {

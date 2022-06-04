@@ -23,5 +23,3 @@ void foo(char* buf, size_t len, size_t idx) {
 	}
 	return;
 }
-
-
