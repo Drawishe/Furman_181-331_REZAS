@@ -9,7 +9,7 @@
 #define BUF_LEN 100 // Длина буфера обмена между анклавом и небезопасным приложением
 /*
 const char table[6][41] = {
-	// Значения были сгенерированы случайным образом благодаря: https://www.browserling.com/tools/random-hex
+	// Тестовые значения
 	"2BC7F22C0EF28F5C14DB4F2D4430AAD222532280",
 	"5373FEDA0C3B53A1B425FFB8542E8CEAB8B8620F",
 	"9334D8E51ADDF87674B4980600DA1060D62F0D4A",
